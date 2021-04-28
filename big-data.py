@@ -29,7 +29,7 @@ if __name__=='__main__':
   NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
 
   for code,type_rst in zip(codes,type_list):
-    restaurants = set(sc.textFile('core_poi_ny.csv') \
+    restaurants = set(sc.textFile('/data/share/bdm/core_poi_ny.csv') \
         .map(lambda x: x.split(',')) \
         .map(lambda x: (x[1], x[9], x[13])) \
         .filter(lambda x: (x[0] in code) and (x[2] in NYC_CITIES)) \
@@ -37,7 +37,7 @@ if __name__=='__main__':
         .collect())
 
 
-    results = sc.textFile('nyc_restaurant_pattern.csv') \
+    results = sc.textFile('/data/share/bdm/nyc_restaurant_pattern.csv') \
         .map(lambda x: next(csv.reader([x]))) \
         .filter(lambda x: x[1] in restaurants)\
         .map(lambda x: (x[1], x[12], x[16])) \
