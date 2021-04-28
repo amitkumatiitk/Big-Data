@@ -28,7 +28,7 @@ if __name__=='__main__':
 
   NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
 
-  for code,type_rst in zip(codes[3],type_list[3]):
+  for code,type_rst in zip(codes,type_list):
     restaurants = set(sc.textFile('core_poi_ny.csv') \
         .map(lambda x: x.split(',')) \
         .map(lambda x: (x[1], x[9], x[13])) \
