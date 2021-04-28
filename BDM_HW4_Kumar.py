@@ -48,7 +48,7 @@ if __name__=='__main__':
         .groupByKey()\
         .map(lambda x : (x[0], list(x[1])))\
         .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).collect()
-        #.saveAsTextFile(type_rst)
+        .saveAsTextFile(type_rst)
     print(len(results,'done!......................'))
     
 
