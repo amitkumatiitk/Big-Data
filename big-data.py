@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 
 
+
 if __name__=='__main__':
 
   codes = [['452210','452311'],['445120'],['722410'],['722511'],
@@ -30,7 +31,7 @@ if __name__=='__main__':
     restaurants = set(sc.textFile('core_poi_ny.csv') \
         .map(lambda x: x.split(',')) \
         .map(lambda x: (x[1], x[9], x[13])) \
-        .filter(lambda x: (x[1] in code) and (x[2] in NYC_CITIES)) \
+        .filter(lambda x: (x[0] in code) and (x[2] in NYC_CITIES)) \
         .map(lambda x: x[0]) \
         .collect())
 
@@ -40,23 +41,12 @@ if __name__=='__main__':
         .filter(lambda x: x[1] in restaurants)\
         .map(lambda x: (x[1], x[12], x[16])) \
         .filter(lambda x: (x[1][:4] in ['2020','2019']))\
-        .map(lambda x: week_day_seq(x) ).collect()
+        .map(lambda x: week_day_seq(x))\
+        .flatMap(lambda x: x)\
+        .map(lambda x: (x[0],int(x[1])))\
+        .groupByKey()\
+        .map(lambda x : (x[0], list(x[1])))\
+        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))) \
+        .saveAsTextFile(type_rst)
+    
 
-    results = np.asarray(results)
-    results = results.reshape(results.shape[0]*7,3)
-    results.shape
-    df  = pd.DataFrame(list(results),columns = ["ID","Date","counts_customers"])
-    df['counts_customers'] = df['counts_customers'].astype('int')
-    final_std = df[['Date','counts_customers']].groupby(['Date']).std().reset_index()
-    final_std.rename(columns= {'counts_customers':'std'},inplace=True)
-    final_median = df[['Date','counts_customers']].groupby(['Date']).quantile().reset_index()
-    final_median.rename(columns ={'counts_customers':'median'},inplace=True)
-    final = final_std.merge(final_median)
-    final['low'] = final['median'] - final['std']
-    final['low'] = np.where(final['low']<0,0,final['low'])
-    final['high'] = final['median'] + final['std']
-    print(type_rst)
-    print(final.shape)
-    print(final['median'].min())
-    print(final['median'].max())
-    final.to_csv(type_rst+'.csv')
