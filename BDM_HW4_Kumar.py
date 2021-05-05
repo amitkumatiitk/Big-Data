@@ -33,6 +33,12 @@ def week_day_seq(x):
   return(final_list)
 
 
+def non_zero(x):
+    if x[3] > 0:
+      return x
+    else:
+      return (tuple([x[0],x[1],x[2],0]))
+
   #NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
   
   
@@ -58,6 +64,8 @@ for code,type_rst in zip(codes,type_list):
       .groupByKey()\
       .map(lambda x : (x[0], list(x[1])))\
       .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1]))))\
-      .map(lambda x: (x[0],x[1],x[1]+x[2],x[1]-x[2])).saveAsTextFile(type_rst)
+      .map(lambda x: (x[0],x[1],x[1]+x[2],x[1]-x[2]))\
+      .map(lambda x: non_zero(x)).collect()
+  
       #.map(lambda x: (x[0],x[1],x[2],x[3]) if x[3]>0 else (x[0],x[1],x[2],0)).saveAsTextFile(type_rst)
  
