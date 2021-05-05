@@ -6,7 +6,6 @@ import numpy as np
 
 
 if __name__=='__main__':
-  print("started")
   sc = SparkContext()
 
   codes = [['452210','452311'],['445120'],['722410'],['722511'],
