@@ -23,15 +23,14 @@ if __name__=='__main__':
  'specialty_food_stores',
  'supermarkets']
 
+def week_day_seq(x):
+  start_date = datetime.datetime.strptime(x[1][:10], "%Y-%m-%d")
+  final_list = [[start_date,x[2].split(',')[0].split('[')[1]]]
 
-  def week_day_seq(x):
-    start_date = datetime.datetime.strptime(x[1][:10], "%Y-%m-%d")
-    final_list = [[x[0],start_date,x[2].split(',')[0].split('[')[1]]]
-
-    for i in range(1,7):
-      start_date = start_date + datetime.timedelta(days=1)
-      final_list.append([x[0],str(start_date),x[2].split(',')[i].split(']')[0]])
-    return(final_list)
+  for i in range(1,7):
+    start_date = start_date + datetime.timedelta(days=1)
+    final_list.append([start_date,x[2].split(',')[i].split(']')[0]])
+  return(final_list)
 
 
   NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
