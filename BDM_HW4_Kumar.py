@@ -55,8 +55,8 @@ if __name__=='__main__':
         .map(lambda x: (x[0],int(x[1])))\
         .groupByKey()\
         .map(lambda x : (x[0], list(x[1])))\
-        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1]))))\
-	.map(lambda x: (x[0],x[1],x[1]+x[2],x[1]-x[2])).saveAsTextFile(type_rst)
+        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(type_rst)
+	#.map(lambda x: (x[0],x[1],x[1]+x[2],x[1]-x[2])).saveAsTextFile(type_rst)
         #.map(lambda x: (x[0],x[1],x[2],x[3]), if x<0, (x[0],x[1],x[2],0)).saveAsTextFile(type_rst)
     
     
