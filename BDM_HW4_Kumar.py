@@ -12,9 +12,15 @@ if __name__=='__main__':
   codes = [['452210','452311'],['445120'],['722410'],['722511'],
           ['722513'],['446110','446191'],['311811','722515'], ['445210', '445220', '445230', '445291', '445292', '445299'],
           ['445110'] ]
-  type_list = ['Big Box Grocers','Convenience Stores','Drinking Places','Full-Service Restaurants',
-                      'Limited-Service Restaurants','Pharmacies and Drug Stores','Snack and Bakeries','Specialty Food Stores',
-                      'Supermarkets']
+  type_list = ['big_box_grocers',
+ 'convenience_stores',
+ 'drinking_places',
+ 'full-service_restaurants',
+ 'limited-service_restaurants',
+ 'pharmacies_and_drug_stores',
+ 'snack_and_bakeries',
+ 'specialty_food_stores',
+ 'supermarkets']
 
 
   def week_day_seq(x):
@@ -30,7 +36,7 @@ if __name__=='__main__':
   NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
 
   for code,type_rst in zip(codes,type_list):
-    restaurants = set(sc.textFile("core-places-nyc.csv") \
+    restaurants = set(sc.textFile("hdfs:///data/share/bdm/core-places-nyc.csv") \
         .map(lambda x: x.split(',')) \
         .map(lambda x: (x[1], x[9], x[13])) \
         .filter(lambda x: (x[0] in code) and (x[2] in NYC_CITIES)) \
@@ -47,5 +53,5 @@ if __name__=='__main__':
         .map(lambda x: (x[0],int(x[1])))\
         .groupByKey()\
         .map(lambda x : (x[0], list(x[1])))\
-        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(type_rst.replace(" ","_").lower())
+        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(type_rst)
 
