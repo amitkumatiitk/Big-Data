@@ -33,14 +33,14 @@ def week_day_seq(x):
   return(final_list)
 
 
-  NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
+  #NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
   
   
 for code,type_rst in zip(codes,type_list):
   restaurants = set(sc.textFile("hdfs:///data/share/bdm/core-places-nyc.csv") \
       .map(lambda x: x.split(',')) \
       .map(lambda x: (x[1], x[9], x[13])) \
-      .filter(lambda x: (x[1] in code) and (x[2] in NYC_CITIES)) \
+      .filter(lambda x: (x[1] in code)) \
       .map(lambda x: x[0]) \
       .collect())
 
