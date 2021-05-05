@@ -51,9 +51,12 @@ for code,type_rst in zip(codes,type_list):
       .collect())
 
 
+  #col_names = ["year", "date", "median", "low", "high"]
 
+  header = sc.parallelize(["date", "median", "low", "high"])
+  #header.union(rdd).saveAsTextFile(...)
 
-  results = sc.textFile("hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*") \
+  header.union(sc.textFile("hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*") \
       .map(lambda x: next(csv.reader([x]))) \
       .filter(lambda x: x[1] in restaurants)\
       .map(lambda x: (x[1], x[12], x[16])) \
@@ -65,7 +68,7 @@ for code,type_rst in zip(codes,type_list):
       .map(lambda x : (x[0], list(x[1])))\
       .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1]))))\
       .map(lambda x: (x[0],x[1],x[1]+x[2],x[1]-x[2]))\
-      .map(lambda x: non_zero(x)).collect()
+      .map(lambda x: non_zero(x))).saveAsTextFile(type_rst)
   
       #.map(lambda x: (x[0],x[1],x[2],x[3]) if x[3]>0 else (x[0],x[1],x[2],0)).saveAsTextFile(type_rst)
  
