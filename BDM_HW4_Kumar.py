@@ -34,31 +34,28 @@ if __name__=='__main__':
 
 
   NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
-
-    
-  for code,type_rst in zip(codes,type_list):
-    restaurants = set(sc.textFile("hdfs:///data/share/bdm/core-places-nyc.csv") \
-        .map(lambda x: x.split(',')) \
-        .map(lambda x: (x[1], x[9], x[13])) \
-        .filter(lambda x: (x[0] in code) and (x[2] in NYC_CITIES)) \
-        .map(lambda x: x[0]) \
-        .collect())
-    
-    results = sc.textFile("hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*") \
-        .map(lambda x: next(csv.reader([x]))) \
-        .filter(lambda x: x[1] in restaurants)\
-        .map(lambda x: (x[1], x[12], x[16])) \
-        .filter(lambda x: (x[1][:4] in ['2020','2019']))\
-        .map(lambda x: week_day_seq(x))\
-        .flatMap(lambda x: x)\
-        .map(lambda x: (x[0],int(x[1])))\
-        .groupByKey()\
-        .map(lambda x : (x[0], list(x[1])))\
-        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(type_rst)
-    
-    
+  
+  
+for code,type_rst in zip(codes,type_list):
+  restaurants = set(sc.textFile("hdfs:///data/share/bdm/core-places-nyc.csv") \
+      .map(lambda x: x.split(',')) \
+      .map(lambda x: (x[1], x[9], x[13])) \
+      .filter(lambda x: (x[1] in code) and (x[2] in NYC_CITIES)) \
+      .map(lambda x: x[0]) \
+      .collect())
 
 
-    
-    
 
+
+  results = sc.textFile("hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*") \
+      .map(lambda x: next(csv.reader([x]))) \
+      .filter(lambda x: x[1] in restaurants)\
+      .map(lambda x: (x[1], x[12], x[16])) \
+      .filter(lambda x: (x[1][:4] in ['2020','2019']))\
+      .map(lambda x: week_day_seq(x))\
+      .flatMap(lambda x: x)\
+      .map(lambda x: (x[0],int(x[1])))\
+      .groupByKey()\
+      .map(lambda x : (x[0], list(x[1])))\
+      .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(type_rst)
+ 
