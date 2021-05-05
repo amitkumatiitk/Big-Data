@@ -59,5 +59,5 @@ for code,type_rst in zip(codes,type_list):
       .map(lambda x : (x[0], list(x[1])))\
       .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1]))))\
       .map(lambda x: (x[0],x[1],x[1]+x[2],x[1]-x[2]))\
-      .map(lambda x: (x[0],x[1],x[2],x[3]) if x[3]>0 else (x[0],x[1],x[2],0)).collect()
+      .map(lambda x: (x[0],x[1],x[2],x[3]) if x[3]>0 else (x[0],x[1],x[2],0)).saveAsTextFile(type_rst)
  
