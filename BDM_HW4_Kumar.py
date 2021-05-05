@@ -30,8 +30,7 @@ if __name__=='__main__':
   NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
 
   for code,type_rst in zip(codes,type_list):
-    save_name = type_rst.replace(" ","_").lower()
-    #print("code is working now........")
+        
     restaurants = set(sc.textFile("core-places-nyc.csv") \
         .map(lambda x: x.split(',')) \
         .map(lambda x: (x[1], x[9], x[13])) \
@@ -50,5 +49,5 @@ if __name__=='__main__':
         .map(lambda x: (x[0],int(x[1])))\
         .groupByKey()\
         .map(lambda x : (x[0], list(x[1])))\
-        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(save_name)
+        .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(type_rst.replace(" ","_").lower())
 
