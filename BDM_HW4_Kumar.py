@@ -57,5 +57,5 @@ for code,type_rst in zip(codes,type_list):
       .map(lambda x: (x[0],int(x[1])))\
       .groupByKey()\
       .map(lambda x : (x[0], list(x[1])))\
-      .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).saveAsTextFile(type_rst)
+      .map(lambda x: (x[0],np.median(np.asarray(x[1])),np.std(np.asarray(x[1])))).collect()
  
