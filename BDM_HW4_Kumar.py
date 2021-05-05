@@ -30,7 +30,7 @@ if __name__=='__main__':
 
     for i in range(1,7):
       start_date = start_date + datetime.timedelta(days=1)
-      final_list.append([x[0],start_date,x[2].split(',')[i].split(']')[0]])
+      final_list.append([x[0],str(start_date),x[2].split(',')[i].split(']')[0]])
     return(final_list)
 
 
