@@ -35,8 +35,7 @@ if __name__=='__main__':
         .map(lambda x: x.split(',')) \
         .map(lambda x: (x[1], x[9], x[13])) \
         .filter(lambda x: (x[0] in code) and (x[2] in NYC_CITIES)) \
-        .map(lambda x: x[0]) \
-        .collect())
+        .map(lambda x: x[0]).collect())
        
     
     results = sc.textFile("hdfs:///data/share/bdm/weekly-patterns-nyc-2019-2020/*") \
