@@ -4,4 +4,10 @@ import itertools
 if __name__=='__main__':
     sc = SparkContext()
     rdd = sc.textFile('hdfs:///data/share/bdm/core-places-nyc.csv')
-    rdd.saveAsTextFile('core-places-nyc')
+    header = rdd.first()
+    rdd.sample(False, 1) \
+        .coalesce(1) \
+        .mapPartitions(lambda x: itertools.chain([header], x)) \
+        .saveAsTextFile('core-places-nyc')
+
+
