@@ -51,7 +51,7 @@ def stats(r1,total_l):
     low = 0
   if high < 0 :
     high = 0
-  return low,median_l1,high
+  return median_l1,low,high
 
   #NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
   
@@ -80,9 +80,13 @@ for code,type_rst in zip(codes,type_list):
       .groupByKey()\
       .map(lambda x : (x[0], list(x[1])))\
       .map(lambda x: (x[0],stats(x[1],len(restaurants))))\
-      .map(lambda x: (x[0].year,x[0].isoformat()[:10].replace('2019','2020'),x[1][0],x[1][1],x[1][2]))
-  
-  header.union(rdd).saveAsTextFile(type_rst) 
+      .map(lambda x: (x[0].year,x[0].isoformat()[:10].replace('2019','2020'),x[1][0],x[1][1],x[1][2]))\
+      .map(lambda x:  ",".join(map(str, [x[0],x[1],x[2],x[3],x[4]])))
+
+  rdd_n = rdd.sortBy(lambda x: x[1][:15])
+  header = sc.parallelize([('year,date,median,low,high')]).coalesce(1)
+  rdd_n = (header + rdd_n)
+  rdd_n.saveAsTextFile(type_rst) 
   
       #.map(lambda x: (x[0],x[1],x[2],x[3]) if x[3]>0 else (x[0],x[1],x[2],0)).saveAsTextFile(type_rst)
  
