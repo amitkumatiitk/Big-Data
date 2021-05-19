@@ -55,6 +55,7 @@ def stats(r1,total_l):
   #NYC_CITIES = set(['New York', 'Brooklyn', 'Queens', 'Bronx', 'Staten Island'])
   
   
+sc = SparkContext()  
 for code,type_rst in zip(codes,type_list):
   restaurants = set(sc.textFile("hdfs:///data/share/bdm/core-places-nyc.csv") \
       .map(lambda x: x.split(',')) \
