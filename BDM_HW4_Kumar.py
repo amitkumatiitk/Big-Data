@@ -73,7 +73,7 @@ for code,type_rst in zip(codes,type_list):
       .map(lambda x: next(csv.reader([x]))) \
       .filter(lambda x: x[1] in restaurants)\
       .map(lambda x: (x[1], x[12], x[16])) \
-      .filter(lambda x: (x[1][:10] >= '2019-01-01'))\
+      .filter(lambda x: (x[1][:10] >= '2019-01-01') and (x[1][:10] <= '2020-12-31'))\
       .map(lambda x: week_day_seq(x))\
       .flatMap(lambda x: x)\
       .map(lambda x: (x[0],int(x[1])))\
